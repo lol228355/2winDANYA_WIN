@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2WIN - VIP Казино</title>
+    <title>MAX_CASINO - Премиум Казино</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -15,14 +15,15 @@
         
         :root {
             --primary: #0a0e17;
-            --secondary: #151a29;
-            --accent: #1a5fff;
-            --accent-dark: #0d47e4;
+            --secondary: #1a1a2e;
+            --accent: #8a2be2;
+            --accent-light: #9370db;
+            --accent-dark: #4b0082;
+            --blue: #4169e1;
             --gold: #ffd700;
-            --gold-dark: #e6c200;
-            --silver: #e0e0e0;
+            --silver: #c0c0c0;
             --text: #ffffff;
-            --text-secondary: #a0a8b8;
+            --text-secondary: #b0b8c5;
             --danger: #ff4757;
             --success: #2ed573;
         }
@@ -42,13 +43,13 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.4;
+            opacity: 0.3;
         }
         
         .bg-particle {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle, var(--accent), transparent);
+            background: radial-gradient(circle, var(--accent), var(--blue), transparent);
             animation: float 20s infinite linear;
             filter: blur(5px);
         }
@@ -60,13 +61,22 @@
             100% { transform: translateY(-100vh) translateX(100px) rotate(360deg); opacity: 0; }
         }
         
+        /* Неоновые эффекты */
+        .neon-glow {
+            box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent), 0 0 30px var(--accent);
+        }
+        
+        .gold-glow {
+            box-shadow: 0 0 10px var(--gold), 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
         header {
             background: rgba(10, 14, 23, 0.95);
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(26, 95, 255, 0.3);
+            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
             position: relative;
             z-index: 10;
         }
@@ -82,30 +92,45 @@
         .logo-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--accent), var(--gold));
+            background: linear-gradient(135deg, var(--accent), var(--blue));
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 28px;
             font-weight: bold;
-            box-shadow: 0 0 20px rgba(26, 95, 255, 0.7);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0.3), rgba(255,255,255,0));
+            transform: rotate(45deg);
         }
         
         h1 {
             font-size: 4rem;
             margin-bottom: 10px;
-            background: linear-gradient(to right, var(--gold), var(--accent));
+            background: linear-gradient(to right, var(--gold), var(--accent-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
             font-weight: 800;
+            letter-spacing: 2px;
         }
         
         .subtitle {
             font-size: 1.3rem;
             opacity: 0.8;
             margin-bottom: 20px;
+            letter-spacing: 1px;
         }
         
         .user-panel {
@@ -117,7 +142,7 @@
         }
         
         .balance {
-            background: rgba(21, 26, 41, 0.8);
+            background: rgba(26, 26, 46, 0.8);
             padding: 12px 25px;
             border-radius: 50px;
             font-size: 1.4rem;
@@ -125,7 +150,25 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            border: 1px solid rgba(26, 95, 255, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .balance::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .balance:hover::before {
+            left: 100%;
         }
         
         .balance i {
@@ -142,19 +185,47 @@
             cursor: pointer;
             transition: all 0.3s;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 5px 20px rgba(26, 95, 255, 0.4);
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
         }
         
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(26, 95, 255, 0.6);
+            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.6);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
         }
         
         .btn-deposit {
             background: linear-gradient(to right, var(--success), #1cad5c);
+            box-shadow: 0 5px 20px rgba(46, 213, 115, 0.4);
+        }
+        
+        .btn-deposit:hover {
+            box-shadow: 0 8px 25px rgba(46, 213, 115, 0.6);
         }
         
         .container {
@@ -171,13 +242,13 @@
         }
         
         .game-card {
-            background: linear-gradient(145deg, rgba(21, 26, 41, 0.8), rgba(10, 14, 23, 0.9));
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(10, 14, 23, 0.9));
             border-radius: 20px;
             padding: 30px;
             text-align: center;
             transition: all 0.4s;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(26, 95, 255, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.2);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
@@ -190,18 +261,35 @@
             left: 0;
             width: 100%;
             height: 5px;
-            background: linear-gradient(to right, var(--accent), var(--gold));
+            background: linear-gradient(to right, var(--accent), var(--blue));
+        }
+        
+        .game-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
+            opacity: 0;
+            transition: 0.3s;
+        }
+        
+        .game-card:hover::after {
+            opacity: 1;
         }
         
         .game-card:hover {
             transform: translateY(-12px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border-color: rgba(138, 43, 226, 0.5);
         }
         
         .game-icon {
             width: 90px;
             height: 90px;
-            background: rgba(26, 95, 255, 0.15);
+            background: rgba(138, 43, 226, 0.15);
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -210,29 +298,57 @@
             font-size: 2.8rem;
             color: var(--gold);
             border: 2px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0.2), rgba(255,255,255,0));
+            transform: rotate(45deg);
         }
         
         .game-card h2 {
             margin-bottom: 18px;
             font-size: 1.9rem;
             color: var(--gold);
+            font-weight: 700;
         }
         
         .game-card p {
             margin-bottom: 25px;
             opacity: 0.9;
             line-height: 1.6;
+            font-size: 1.05rem;
         }
         
         .game-area {
             display: none;
             margin-top: 40px;
-            background: linear-gradient(145deg, rgba(21, 26, 41, 0.8), rgba(10, 14, 23, 0.9));
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(10, 14, 23, 0.9));
             border-radius: 20px;
             padding: 40px;
             text-align: center;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(26, 95, 255, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--accent), var(--blue));
         }
         
         .back-btn {
@@ -243,8 +359,8 @@
         /* Колесо фортуны */
         .wheel-container {
             position: relative;
-            width: 400px;
-            height: 400px;
+            width: 450px;
+            height: 450px;
             margin: 0 auto 40px;
         }
         
@@ -253,8 +369,8 @@
             height: 100%;
             border-radius: 50%;
             position: relative;
-            transition: transform 4s cubic-bezier(0.2, 0.8, 0.3, 1);
-            box-shadow: 0 0 0 20px rgba(26, 95, 255, 0.3),
+            transition: transform 5s cubic-bezier(0.1, 0.1, 0.1, 1);
+            box-shadow: 0 0 0 20px rgba(138, 43, 226, 0.3),
                         inset 0 0 0 20px rgba(0, 0, 0, 0.4);
             overflow: hidden;
         }
@@ -269,7 +385,8 @@
             justify-content: center;
             color: white;
             font-weight: bold;
-            font-size: 1.2rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            font-size: 1.8rem;
         }
         
         .wheel-pointer {
@@ -282,6 +399,8 @@
             background: var(--gold);
             clip-path: polygon(50% 100%, 0 0, 100% 0);
             z-index: 10;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+            filter: drop-shadow(0 0 5px var(--gold));
         }
         
         .wheel-center {
@@ -289,16 +408,19 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
             background: var(--gold);
             border-radius: 50%;
             z-index: 5;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
             color: var(--primary);
+            font-size: 1.2rem;
+            border: 3px solid var(--accent);
         }
         
         .result {
@@ -308,16 +430,23 @@
             padding: 20px;
             border-radius: 15px;
             background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .win {
             color: var(--gold);
             background: rgba(0, 100, 0, 0.2);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
         
         .lose {
             color: var(--danger);
             background: rgba(100, 0, 0, 0.2);
+            border: 1px solid rgba(255, 0, 0, 0.2);
         }
         
         /* Слот-машина */
@@ -331,16 +460,110 @@
         .slot {
             width: 120px;
             height: 160px;
-            background: linear-gradient(145deg, #1a2a6c, #0a0e17);
+            background: linear-gradient(145deg, #2a1a6c, #0a0e17);
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 4rem;
             color: white;
-            box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8);
+            box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8),
+                        0 8px 20px rgba(0, 0, 0, 0.5);
             overflow: hidden;
-            border: 2px solid rgba(26, 95, 255, 0.5);
+            border: 2px solid rgba(138, 43, 226, 0.5);
+            position: relative;
+        }
+        
+        .slot::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), transparent);
+        }
+        
+        .slot-reel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.1s;
+        }
+        
+        /* Карточная игра */
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .card {
+            width: 140px;
+            height: 190px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            color: #333;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-12px);
+        }
+        
+        .card.red {
+            color: #d40000;
+        }
+        
+        .card.black {
+            color: #000000;
+        }
+        
+        .card-corner {
+            position: absolute;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+        
+        .card-top {
+            top: 12px;
+            left: 12px;
+        }
+        
+        .card-bottom {
+            bottom: 12px;
+            right: 12px;
+            transform: rotate(180deg);
+        }
+        
+        .card-suit {
+            font-size: 4rem;
+        }
+        
+        /* Коэффициенты */
+        .multiplier-display {
+            font-size: 5rem;
+            margin: 40px 0;
+            font-weight: bold;
+            color: var(--gold);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .bet-controls {
@@ -357,9 +580,11 @@
             padding: 12px 25px;
             border-radius: 15px;
             min-width: 180px;
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* Модальное окно */
+        /* Модальное окно пополнения */
         .modal {
             display: none;
             position: fixed;
@@ -369,6 +594,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
             z-index: 100;
+            backdrop-filter: blur(5px);
         }
         
         .modal-content {
@@ -381,7 +607,20 @@
             border-radius: 20px;
             width: 90%;
             max-width: 500px;
+            box-shadow: 0 0 50px rgba(138, 43, 226, 0.5);
+            border: 1px solid rgba(138, 43, 226, 0.5);
             text-align: center;
+        }
+        
+        .modal h2 {
+            margin-bottom: 25px;
+            color: var(--gold);
+            font-size: 2.2rem;
+        }
+        
+        .modal p {
+            margin-bottom: 20px;
+            line-height: 1.6;
         }
         
         .phone-number {
@@ -391,6 +630,8 @@
             border-radius: 10px;
             margin: 25px 0;
             font-weight: bold;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .close-modal {
@@ -399,6 +640,12 @@
             right: 20px;
             font-size: 2rem;
             cursor: pointer;
+            color: var(--text-secondary);
+            transition: 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--danger);
         }
         
         footer {
@@ -406,25 +653,76 @@
             margin-top: 60px;
             padding: 40px;
             background: rgba(0, 0, 0, 0.5);
+            font-size: 0.9rem;
+            opacity: 0.8;
+            border-top: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        
+        .max-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--accent), var(--blue));
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 0 5px;
+            font-size: 0.8em;
+        }
+        
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .wheel-container {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .user-panel {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .slot {
+                width: 90px;
+                height: 130px;
+                font-size: 3rem;
+            }
+            
+            .card {
+                width: 110px;
+                height: 150px;
+                font-size: 2.2rem;
+            }
+            
+            .card-suit {
+                font-size: 3rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Анимированный фон -->
     <div class="bg-animation" id="bgAnimation"></div>
     
     <header>
         <div class="logo">
-            <div class="logo-icon">2W</div>
-            <h1>2WIN</h1>
+            <div class="logo-icon">M</div>
+            <h1>MAX_CASINO</h1>
         </div>
-        <div class="subtitle">VIP КАЗИНО • ЭКСКЛЮЗИВНЫЕ ИГРЫ</div>
+        <div class="subtitle">ПРЕМИУМ КАЗИНО <span class="max-badge">MAX</span> • ЭКСКЛЮЗИВНЫЕ ИГРЫ <span class="max-badge">MAX</span></div>
         
         <div class="user-panel">
             <div class="balance">
                 <i class="fas fa-coins"></i>
                 <span id="userBalance">1000</span> монет
             </div>
-            <button class="btn btn-deposit" id="depositBtn">
+            <button class="btn btn-deposit" onclick="openDepositModal()">
                 <i class="fas fa-plus-circle"></i> Пополнить
             </button>
         </div>
@@ -436,9 +734,9 @@
                 <div class="game-icon">
                     <i class="fas fa-dharmachakra"></i>
                 </div>
-                <h2>Колесо Удачи</h2>
-                <p>Испытай судьбу на нашем эксклюзивном колесе!</p>
-                <button class="btn play-btn" data-game="wheel">
+                <h2>Колесо <span class="max-badge">MAX</span></h2>
+                <p>Испытай судьбу на нашем эксклюзивном колесе с крупными призами <span class="max-badge">MAX</span>!</p>
+                <button class="btn" onclick="showGame('wheel')">
                     <i class="fas fa-play-circle"></i> Играть
                 </button>
             </div>
@@ -447,9 +745,9 @@
                 <div class="game-icon">
                     <i class="fas fa-sliders-h"></i>
                 </div>
-                <h2>Слоты Премиум</h2>
-                <p>Роскошные слоты с уникальными символами!</p>
-                <button class="btn play-btn" data-game="slots">
+                <h2>Слоты <span class="max-badge">MAX</span></h2>
+                <p>Роскошные слоты с уникальными символами и увеличенными джекпотами <span class="max-badge">MAX</span>!</p>
+                <button class="btn" onclick="showGame('slots')">
                     <i class="fas fa-play-circle"></i> Играть
                 </button>
             </div>
@@ -458,9 +756,9 @@
                 <div class="game-icon">
                     <i class="fas fa-heart"></i>
                 </div>
-                <h2>Карты Судьбы</h2>
-                <p>Угадай цвет следующей карты!</p>
-                <button class="btn play-btn" data-game="cards">
+                <h2>Карты <span class="max-badge">MAX</span></h2>
+                <p>Угадай цвет следующей карты и получи максимальный коэффициент выигрыша <span class="max-badge">MAX</span>!</p>
+                <button class="btn" onclick="showGame('cards')">
                     <i class="fas fa-play-circle"></i> Играть
                 </button>
             </div>
@@ -469,9 +767,9 @@
                 <div class="game-icon">
                     <i class="fas fa-bolt"></i>
                 </div>
-                <h2>Множитель</h2>
-                <p>Сделай ставку и получи случайный множитель!</p>
-                <button class="btn play-btn" data-game="multiplier">
+                <h2>Множитель <span class="max-badge">MAX</span></h2>
+                <p>Сделай ставку и получи случайный множитель с эксклюзивными коэффициентами <span class="max-badge">MAX</span>!</p>
+                <button class="btn" onclick="showGame('multiplier')">
                     <i class="fas fa-play-circle"></i> Играть
                 </button>
             </div>
@@ -479,18 +777,21 @@
         
         <!-- Колесо фортуны -->
         <div class="game-area" id="wheelGame">
-            <button class="btn back-btn" id="backFromWheel">
-                <i class="fas fa-arrow-left"></i> Назад
+            <button class="btn back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Назад к играм
             </button>
-            <h2>Колесо Удачи</h2>
+            <h2>Колесо <span class="max-badge">MAX</span></h2>
+            <p>Крути колесо и выигрывай эксклюзивные призы <span class="max-badge">MAX</span>!</p>
             
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
-                <div class="wheel" id="wheel"></div>
-                <div class="wheel-center">VIP</div>
+                <div class="wheel" id="wheel">
+                    <!-- Сегменты колеса будут добавлены через JS -->
+                </div>
+                <div class="wheel-center">MAX</div>
             </div>
             
-            <button class="btn" id="spinBtn">
+            <button class="btn" id="spinBtn" onclick="spinWheel()">
                 <i class="fas fa-redo-alt"></i> Крутить за 200 монет
             </button>
             <div class="result" id="wheelResult"></div>
@@ -498,26 +799,33 @@
         
         <!-- Слот-машина -->
         <div class="game-area" id="slotsGame">
-            <button class="btn back-btn" id="backFromSlots">
-                <i class="fas fa-arrow-left"></i> Назад
+            <button class="btn back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Назад к играм
             </button>
-            <h2>Слоты Премиум</h2>
+            <h2>Слоты <span class="max-badge">MAX</span></h2>
+            <p>Собери выигрышные комбинации и получи джекпот <span class="max-badge">MAX</span>!</p>
             
             <div class="balance">Баланс: <span id="slotsBalance">1000</span> монет</div>
             
             <div class="slots-container">
-                <div class="slot" id="reel1">💎</div>
-                <div class="slot" id="reel2">💎</div>
-                <div class="slot" id="reel3">💎</div>
+                <div class="slot">
+                    <div class="slot-reel" id="reel1">💎</div>
+                </div>
+                <div class="slot">
+                    <div class="slot-reel" id="reel2">💎</div>
+                </div>
+                <div class="slot">
+                    <div class="slot-reel" id="reel3">💎</div>
+                </div>
             </div>
             
             <div class="bet-controls">
-                <button class="btn" id="decreaseSlotsBet">-100</button>
+                <button class="btn" onclick="changeBet(-100)">-100</button>
                 <span class="bet-amount">Ставка: <span id="slotsBet">200</span></span>
-                <button class="btn" id="increaseSlotsBet">+100</button>
+                <button class="btn" onclick="changeBet(100)">+100</button>
             </div>
             
-            <button class="btn" id="spinSlotsBtn">
+            <button class="btn" id="spinSlotsBtn" onclick="spinSlots()">
                 <i class="fas fa-redo-alt"></i> Крутить
             </button>
             <div class="result" id="slotsResult"></div>
@@ -525,410 +833,123 @@
         
         <!-- Карточная игра -->
         <div class="game-area" id="cardsGame">
-            <button class="btn back-btn" id="backFromCards">
-                <i class="fas fa-arrow-left"></i> Назад
+            <button class="btn back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Назад к играм
             </button>
-            <h2>Карты Судьбы</h2>
+            <h2>Карты <span class="max-badge">MAX</span></h2>
+            <p>Угадай цвет следующей карты: красный или черный.</p>
             
             <div class="balance">Баланс: <span id="cardsBalance">1000</span> монет</div>
             
             <div class="cards-container">
                 <div class="card red" id="currentCard">
-                    <div class="card-value">A♥</div>
+                    <div class="card-corner card-top">A<span>♥</span></div>
+                    <div class="card-suit">♥</div>
+                    <div class="card-corner card-bottom">A<span>♥</span></div>
                 </div>
             </div>
             
             <div class="bet-controls">
-                <button class="btn" id="decreaseCardsBet">-100</button>
+                <button class="btn" onclick="changeCardBet(-100)">-100</button>
                 <span class="bet-amount">Ставка: <span id="cardsBet">200</span></span>
-                <button class="btn" id="increaseCardsBet">+100</button>
+                <button class="btn" onclick="changeCardBet(100)">+100</button>
             </div>
             
             <div style="margin: 25px 0;">
-                <button class="btn" id="guessRed">Красный (x1.5)</button>
-                <button class="btn" id="guessBlack">Черный (x1.5)</button>
+                <button class="btn" onclick="guessCard('red')">Красный (x1.5)</button>
+                <button class="btn" onclick="guessCard('black')">Черный (x1.5)</button>
             </div>
             
             <div class="result" id="cardsResult"></div>
         </div>
         
-        <!-- Множитель -->
+        <!-- Игра с коэффициентами -->
         <div class="game-area" id="multiplierGame">
-            <button class="btn back-btn" id="backFromMultiplier">
-                <i class="fas fa-arrow-left"></i> Назад
+            <button class="btn back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Назад к играм
             </button>
-            <h2>Множитель</h2>
+            <h2>Множитель <span class="max-badge">MAX</span></h2>
+            <p>Сделай ставку и получи случайный множитель от 0x до 20x!</p>
             
             <div class="balance">Баланс: <span id="multiplierBalance">1000</span> монет</div>
             
             <div class="multiplier-display" id="multiplierDisplay">?</div>
             
             <div class="bet-controls">
-                <button class="btn" id="decreaseMultiplierBet">-100</button>
+                <button class="btn" onclick="changeMultiplierBet(-100)">-100</button>
                 <span class="bet-amount">Ставка: <span id="multiplierBet">200</span></span>
-                <button class="btn" id="increaseMultiplierBet">+100</button>
+                <button class="btn" onclick="changeMultiplierBet(100)">+100</button>
             </div>
             
-            <button class="btn" id="playMultiplierBtn">
+            <button class="btn" onclick="playMultiplier()">
                 <i class="fas fa-bolt"></i> Играть
             </button>
             <div class="result" id="multiplierResult"></div>
         </div>
     </div>
     
-    <!-- Модальное окно -->
+    <!-- Модальное окно пополнения -->
     <div class="modal" id="depositModal">
         <div class="modal-content">
-            <span class="close-modal" id="closeModal">&times;</span>
-            <h2>Пополнение счета</h2>
+            <span class="close-modal" onclick="closeDepositModal()">&times;</span>
+            <h2>Пополнение счета <span class="max-badge">MAX</span></h2>
             <p>Для пополнения баланса отправьте любую сумму на номер:</p>
             <div class="phone-number">+7 917 950 84 45</div>
-            <p>Укажите в комментарии к платежу ваш ID: <strong id="userId">2WIN-7854</strong></p>
+            <p>Укажите в комментарии к платежу ваш ID: <strong id="userId">MAX-7854</strong></p>
             <p>После оплаты баланс будет пополнен в течение 5 минут.</p>
-            <button class="btn btn-deposit" id="closeModalBtn">
+            <button class="btn btn-deposit" onclick="closeDepositModal()">
                 <i class="fas fa-check"></i> Понятно
             </button>
         </div>
     </div>
     
     <footer>
-        <p>2WIN - VIP КАЗИНО. Играйте ответственно. 18+</p>
+        <p>MAX_CASINO - ПРЕМИУМ КАЗИНО. Играйте ответственно. 18+</p>
+        <p>© 2023 MAX_CASINO. Все права защищены. <span class="max-badge">MAX</span></p>
     </footer>
 
     <script>
-        // Глобальные переменные
-        let userBalance = 1000;
-        let slotsBet = 200;
-        let cardsBet = 200;
-        let multiplierBet = 200;
-
-        // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', function() {
-            initBackground();
-            initEventListeners();
-            updateAllBalances();
-            initCardsGame();
-            showMainMenu();
-        });
-
+        // Инициализация анимированного фона
         function initBackground() {
             const bgAnimation = document.getElementById('bgAnimation');
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 25; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('bg-particle');
-                const size = Math.random() * 100 + 50;
+                const size = Math.random() * 120 + 30;
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 particle.style.left = `${Math.random() * 100}%`;
                 particle.style.top = `${Math.random() * 100}%`;
-                particle.style.animationDelay = `${Math.random() * 15}s`;
+                particle.style.animationDelay = `${Math.random() * 20}s`;
+                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
                 bgAnimation.appendChild(particle);
             }
         }
-
-        function initEventListeners() {
-            // Главное меню
-            document.querySelectorAll('.play-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    showGame(this.getAttribute('data-game'));
-                });
-            });
-
-            // Кнопки назад
-            document.getElementById('backFromWheel').addEventListener('click', showMainMenu);
-            document.getElementById('backFromSlots').addEventListener('click', showMainMenu);
-            document.getElementById('backFromCards').addEventListener('click', showMainMenu);
-            document.getElementById('backFromMultiplier').addEventListener('click', showMainMenu);
-
-            // Пополнение
-            document.getElementById('depositBtn').addEventListener('click', openDepositModal);
-            document.getElementById('closeModal').addEventListener('click', closeDepositModal);
-            document.getElementById('closeModalBtn').addEventListener('click', closeDepositModal);
-
-            // Колесо
-            document.getElementById('spinBtn').addEventListener('click', spinWheel);
-
-            // Слоты
-            document.getElementById('decreaseSlotsBet').addEventListener('click', () => changeBet(-100));
-            document.getElementById('increaseSlotsBet').addEventListener('click', () => changeBet(100));
-            document.getElementById('spinSlotsBtn').addEventListener('click', spinSlots);
-
-            // Карты
-            document.getElementById('decreaseCardsBet').addEventListener('click', () => changeCardBet(-100));
-            document.getElementById('increaseCardsBet').addEventListener('click', () => changeCardBet(100));
-            document.getElementById('guessRed').addEventListener('click', () => guessCard('red'));
-            document.getElementById('guessBlack').addEventListener('click', () => guessCard('black'));
-
-            // Множитель
-            document.getElementById('decreaseMultiplierBet').addEventListener('click', () => changeMultiplierBet(-100));
-            document.getElementById('increaseMultiplierBet').addEventListener('click', () => changeMultiplierBet(100));
-            document.getElementById('playMultiplierBtn').addEventListener('click', playMultiplier);
-        }
-
+        
+        // Общие функции для переключения между играми
         function showGame(gameId) {
-            hideAllGames();
-            document.getElementById(gameId + 'Game').style.display = 'block';
-            if (gameId === 'wheel') initWheel();
-        }
-
-        function showMainMenu() {
-            hideAllGames();
-            document.getElementById('gamesGrid').style.display = 'grid';
-        }
-
-        function hideAllGames() {
             document.getElementById('gamesGrid').style.display = 'none';
             document.getElementById('wheelGame').style.display = 'none';
             document.getElementById('slotsGame').style.display = 'none';
             document.getElementById('cardsGame').style.display = 'none';
             document.getElementById('multiplierGame').style.display = 'none';
+            
+            document.getElementById(gameId + 'Game').style.display = 'block';
+            
+            // Инициализация конкретной игры при открытии
+            if (gameId === 'wheel') {
+                initWheel();
+            }
         }
-
+        
+        function showMainMenu() {
+            document.getElementById('gamesGrid').style.display = 'grid';
+            document.getElementById('wheelGame').style.display = 'none';
+            document.getElementById('slotsGame').style.display = 'none';
+            document.getElementById('cardsGame').style.display = 'none';
+            document.getElementById('multiplierGame').style.display = 'none';
+        }
+        
+        // Модальное окно пополнения
         function openDepositModal() {
-            document.getElementById('depositModal').style.display = 'block';
-            document.getElementById('userId').textContent = '2WIN-' + Math.floor(1000 + Math.random() * 9000);
-        }
-
-        function closeDepositModal() {
-            document.getElementById('depositModal').style.display = 'none';
-        }
-
-        function updateAllBalances() {
-            document.getElementById('userBalance').textContent = userBalance;
-            document.getElementById('slotsBalance').textContent = userBalance;
-            document.getElementById('cardsBalance').textContent = userBalance;
-            document.getElementById('multiplierBalance').textContent = userBalance;
-        }
-
-        // Колесо фортуны
-        function initWheel() {
-            const wheel = document.getElementById('wheel');
-            wheel.innerHTML = '';
-            wheel.style.transform = 'rotate(0deg)';
-            
-            const segments = [
-                { text: "0", color: "#ff4d4d", value: 0 },
-                { text: "0", color: "#ff944d", value: 0 },
-                { text: "10", color: "#ffdd4d", value: 10 },
-                { text: "0", color: "#4dff4d", value: 0 },
-                { text: "0", color: "#4dd2ff", value: 0 },
-                { text: "50", color: "#4d4dff", value: 50 },
-                { text: "0", color: "#dd4dff", value: 0 },
-                { text: "100", color: "#ff4da6", value: 100 }
-            ];
-            
-            segments.forEach((segment, index) => {
-                const segmentEl = document.createElement('div');
-                segmentEl.classList.add('wheel-segment');
-                segmentEl.style.backgroundColor = segment.color;
-                segmentEl.style.transform = `rotate(${index * 45}deg) skewY(60deg)`;
-                segmentEl.innerHTML = `<div style="transform: skewY(-60deg) rotate(30deg);">${segment.text}</div>`;
-                wheel.appendChild(segmentEl);
-            });
-        }
-
-        function spinWheel() {
-            if (userBalance < 200) {
-                showResult('wheelResult', "Недостаточно монет!", false);
-                return;
-            }
-            
-            userBalance -= 200;
-            updateAllBalances();
-            
-            const wheel = document.getElementById('wheel');
-            const spinBtn = document.getElementById('spinBtn');
-            
-            spinBtn.disabled = true;
-            document.getElementById('wheelResult').textContent = '';
-            
-            const degrees = 1080 + Math.floor(Math.random() * 360);
-            wheel.style.transform = `rotate(${degrees}deg)`;
-            
-            setTimeout(() => {
-                const actualDegrees = degrees % 360;
-                const segmentIndex = Math.floor(actualDegrees / 45);
-                
-                const prizes = [0, 0, 10, 0, 0, 50, 0, 100];
-                const winAmount = prizes[segmentIndex];
-                
-                if (winAmount > 0) {
-                    userBalance += winAmount;
-                    showResult('wheelResult', `Выигрыш: ${winAmount} монет!`, true);
-                } else {
-                    showResult('wheelResult', "Попробуйте еще раз!", false);
-                }
-                
-                updateAllBalances();
-                spinBtn.disabled = false;
-            }, 4000);
-        }
-
-        // Слоты
-        function changeBet(amount) {
-            slotsBet += amount;
-            if (slotsBet < 100) slotsBet = 100;
-            if (slotsBet > userBalance) slotsBet = userBalance;
-            document.getElementById('slotsBet').textContent = slotsBet;
-        }
-
-        function spinSlots() {
-            if (userBalance < slotsBet) {
-                showResult('slotsResult', "Недостаточно монет!", false);
-                return;
-            }
-            
-            userBalance -= slotsBet;
-            updateAllBalances();
-            
-            const symbols = ['🍒', '🍋', '💎', '7', '⭐'];
-            const reels = [
-                document.getElementById('reel1'),
-                document.getElementById('reel2'),
-                document.getElementById('reel3')
-            ];
-            
-            let spins = 0;
-            const results = [];
-            
-            const spinInterval = setInterval(() => {
-                reels.forEach((reel, index) => {
-                    const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
-                    reel.textContent = randomSymbol;
-                    
-                    if (spins > 10 + index * 5 && !results[index]) {
-                        results[index] = randomSymbol;
-                    }
-                });
-                
-                spins++;
-                
-                if (spins > 25) {
-                    clearInterval(spinInterval);
-                    
-                    let winAmount = 0;
-                    if (results[0] === results[1] && results[1] === results[2]) {
-                        winAmount = slotsBet * 5;
-                    } else if (results[0] === results[1] || results[1] === results[2]) {
-                        winAmount = slotsBet * 2;
-                    }
-                    
-                    if (winAmount > 0) {
-                        userBalance += winAmount;
-                        showResult('slotsResult', `Выигрыш: ${winAmount} монет!`, true);
-                    } else {
-                        showResult('slotsResult', "Повезет в следующий раз!", false);
-                    }
-                    
-                    updateAllBalances();
-                }
-            }, 100);
-        }
-
-        // Карты
-        function initCardsGame() {
-            showNewCard();
-        }
-
-        function changeCardBet(amount) {
-            cardsBet += amount;
-            if (cardsBet < 100) cardsBet = 100;
-            if (cardsBet > userBalance) cardsBet = userBalance;
-            document.getElementById('cardsBet').textContent = cardsBet;
-        }
-
-        function showNewCard() {
-            const suits = ['♥', '♦', '♣', '♠'];
-            const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-            const suit = suits[Math.floor(Math.random() * suits.length)];
-            const value = values[Math.floor(Math.random() * values.length)];
-            
-            const card = document.getElementById('currentCard');
-            card.textContent = value + suit;
-            card.className = 'card ' + (suit === '♥' || suit === '♦' ? 'red' : 'black');
-        }
-
-        function guessCard(color) {
-            if (userBalance < cardsBet) {
-                showResult('cardsResult', "Недостаточно монет!", false);
-                return;
-            }
-            
-            userBalance -= cardsBet;
-            updateAllBalances();
-            
-            const currentCard = document.getElementById('currentCard');
-            const isRed = currentCard.classList.contains('red');
-            const guessedCorrect = (color === 'red' && isRed) || (color === 'black' && !isRed);
-            
-            if (guessedCorrect && Math.random() < 0.4) {
-                const winAmount = Math.floor(cardsBet * 1.5);
-                userBalance += winAmount;
-                showResult('cardsResult', `Правильно! Выигрыш: ${winAmount} монет!`, true);
-            } else {
-                showResult('cardsResult', "Не угадали!", false);
-            }
-            
-            updateAllBalances();
-            showNewCard();
-        }
-
-        // Множитель
-        function changeMultiplierBet(amount) {
-            multiplierBet += amount;
-            if (multiplierBet < 100) multiplierBet = 100;
-            if (multiplierBet > userBalance) multiplierBet = userBalance;
-            document.getElementById('multiplierBet').textContent = multiplierBet;
-        }
-
-        function playMultiplier() {
-            if (userBalance < multiplierBet) {
-                showResult('multiplierResult', "Недостаточно монет!", false);
-                return;
-            }
-            
-            userBalance -= multiplierBet;
-            updateAllBalances();
-            
-            const display = document.getElementById('multiplierDisplay');
-            let counter = 0;
-            
-            const interval = setInterval(() => {
-                display.textContent = (Math.random() * 10).toFixed(1) + 'x';
-                counter++;
-                
-                if (counter > 15) {
-                    clearInterval(interval);
-                    
-                    const random = Math.random();
-                    let multiplier;
-                    
-                    if (random < 0.6) multiplier = 0;
-                    else if (random < 0.8) multiplier = 1;
-                    else if (random < 0.9) multiplier = 2;
-                    else if (random < 0.95) multiplier = 5;
-                    else multiplier = 10;
-                    
-                    display.textContent = multiplier.toFixed(1) + 'x';
-                    
-                    if (multiplier > 0) {
-                        const winAmount = Math.floor(multiplierBet * multiplier);
-                        userBalance += winAmount;
-                        showResult('multiplierResult', `Выигрыш: ${winAmount} монет!`, true);
-                    } else {
-                        showResult('multiplierResult', "Попробуйте еще раз!", false);
-                    }
-                    
-                    updateAllBalances();
-                }
-            }, 100);
-        }
-
-        function showResult(elementId, message, isWin) {
-            const element = document.getElementById(elementId);
-            element.textContent = message;
-            element.className = 'result ' + (isWin ? 'win' : 'lose');
-        }
-    </script>
-</body>
-</html>
+            document.getElementById('depositModal').
