@@ -364,6 +364,13 @@
             background: var(--accent);
         }
         
+        .max-bet-btn {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
         /* Слот-машина */
         .slots-container {
             display: flex;
@@ -679,7 +686,9 @@
                     <button class="bet-btn" data-bet="100">100</button>
                     <button class="bet-btn" data-bet="500">500</button>
                     <button class="bet-btn" data-bet="1000">1000</button>
-                    <button class="bet-btn" data-bet="5000">5000</button>
+                    <button class="bet-btn max-bet-btn" id="wheelMaxBet">
+                        <i class="fab fa-maxcdn"></i>
+                    </button>
                 </div>
             </div>
             
@@ -711,7 +720,9 @@
                     <button class="bet-btn" data-bet="100">100</button>
                     <button class="bet-btn" data-bet="500">500</button>
                     <button class="bet-btn" data-bet="1000">1000</button>
-                    <button class="bet-btn" data-bet="5000">5000</button>
+                    <button class="bet-btn max-bet-btn" id="slotsMaxBet">
+                        <i class="fab fa-maxcdn"></i>
+                    </button>
                 </div>
             </div>
             
@@ -743,7 +754,9 @@
                     <button class="bet-btn" data-bet="100">100</button>
                     <button class="bet-btn" data-bet="500">500</button>
                     <button class="bet-btn" data-bet="1000">1000</button>
-                    <button class="bet-btn" data-bet="5000">5000</button>
+                    <button class="bet-btn max-bet-btn" id="cardsMaxBet">
+                        <i class="fab fa-maxcdn"></i>
+                    </button>
                 </div>
             </div>
             
@@ -777,7 +790,9 @@
                     <button class="bet-btn" data-bet="100">100</button>
                     <button class="bet-btn" data-bet="500">500</button>
                     <button class="bet-btn" data-bet="1000">1000</button>
-                    <button class="bet-btn" data-bet="5000">5000</button>
+                    <button class="bet-btn max-bet-btn" id="multiplierMaxBet">
+                        <i class="fab fa-maxcdn"></i>
+                    </button>
                 </div>
             </div>
             
@@ -805,7 +820,9 @@
                     <button class="bet-btn" data-bet="100">100</button>
                     <button class="bet-btn" data-bet="500">500</button>
                     <button class="bet-btn" data-bet="1000">1000</button>
-                    <button class="bet-btn" data-bet="5000">5000</button>
+                    <button class="bet-btn max-bet-btn" id="diceMaxBet">
+                        <i class="fab fa-maxcdn"></i>
+                    </button>
                 </div>
             </div>
             
@@ -839,7 +856,9 @@
                     <button class="bet-btn" data-bet="100">100</button>
                     <button class="bet-btn" data-bet="500">500</button>
                     <button class="bet-btn" data-bet="1000">1000</button>
-                    <button class="bet-btn" data-bet="5000">5000</button>
+                    <button class="bet-btn max-bet-btn" id="rouletteMaxBet">
+                        <i class="fab fa-maxcdn"></i>
+                    </button>
                 </div>
             </div>
             
@@ -894,7 +913,6 @@
     <script>
         // Глобальные переменные
         let userBalance = 1000;
-        let currentBet = 200;
 
         // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', function() {
@@ -955,6 +973,14 @@
                 });
             });
 
+            // Кнопки MAX
+            document.getElementById('wheelMaxBet').addEventListener('click', () => setMaxBet('wheel'));
+            document.getElementById('slotsMaxBet').addEventListener('click', () => setMaxBet('slots'));
+            document.getElementById('cardsMaxBet').addEventListener('click', () => setMaxBet('cards'));
+            document.getElementById('multiplierMaxBet').addEventListener('click', () => setMaxBet('multiplier'));
+            document.getElementById('diceMaxBet').addEventListener('click', () => setMaxBet('dice'));
+            document.getElementById('rouletteMaxBet').addEventListener('click', () => setMaxBet('roulette'));
+
             // Колесо
             document.getElementById('spinBtn').addEventListener('click', spinWheel);
 
@@ -978,6 +1004,13 @@
                     playRoulette(betType);
                 });
             });
+        }
+
+        function setMaxBet(game) {
+            const betInput = document.getElementById(game + 'Bet');
+            if (betInput) {
+                betInput.value = userBalance;
+            }
         }
 
         function getActiveGame() {
