@@ -23,7 +23,7 @@
                 <i class="fas fa-coins"></i>
                 <span id="userBalance">1000</span> монет
             </div>
-            <button class="btn btn-deposit" onclick="openDepositModal()">
+            <button class="btn btn-deposit" id="depositBtn">
                 <i class="fas fa-plus-circle"></i> Пополнить
             </button>
         </div>
@@ -37,7 +37,7 @@
                 </div>
                 <h2>Колесо Удачи</h2>
                 <p>Испытай судьбу на нашем эксклюзивном колесе с крупными призами и бонусами!</p>
-                <button class="btn" onclick="showGame('wheel')">
+                <button class="btn play-wheel-btn">
                     <i class="fas fa-play-circle"></i> Играть
                 </button>
             </div>
@@ -48,7 +48,7 @@
                 </div>
                 <h2>Слоты Премиум</h2>
                 <p>Роскошные слоты с уникальными символами и увеличенными джекпотами!</p>
-                <button class="btn" onclick="showGame('slots')">
+                <button class="btn play-slots-btn">
                     <i class="fas fa-play-circle"></i> Играть
                 </button>
             </div>
@@ -59,7 +59,7 @@
                 </div>
                 <h2>Карты Судьбы</h2>
                 <p>Угадай цвет следующей карты и получи максимальный коэффициент выигрыша!</p>
-                <button class="btn" onclick="showGame('cards')">
+                <button class="btn play-cards-btn">
                     <i class="fas fa-play-circle"></i> Играть
                 </button>
             </div>
@@ -70,7 +70,7 @@
                 </div>
                 <h2>Множитель</h2>
                 <p>Сделай ставку и получи случайный множитель с эксклюзивными коэффициентами!</p>
-                <button class="btn" onclick="showGame('multiplier')">
+                <button class="btn play-multiplier-btn">
                     <i class="fas fa-play-circle"></i> Играть
                 </button>
             </div>
@@ -78,7 +78,7 @@
         
         <!-- Колесо фортуны -->
         <div class="game-area" id="wheelGame">
-            <button class="btn back-btn" onclick="showMainMenu()">
+            <button class="btn back-btn" id="backFromWheel">
                 <i class="fas fa-arrow-left"></i> Назад к играм
             </button>
             <h2>Колесо Удачи</h2>
@@ -92,7 +92,7 @@
                 <div class="wheel-center">VIP</div>
             </div>
             
-            <button class="btn" id="spinBtn" onclick="spinWheel()">
+            <button class="btn" id="spinBtn">
                 <i class="fas fa-redo-alt"></i> Крутить за 200 монет
             </button>
             <div class="result" id="wheelResult"></div>
@@ -100,7 +100,7 @@
         
         <!-- Слот-машина -->
         <div class="game-area" id="slotsGame">
-            <button class="btn back-btn" onclick="showMainMenu()">
+            <button class="btn back-btn" id="backFromSlots">
                 <i class="fas fa-arrow-left"></i> Назад к играм
             </button>
             <h2>Слоты Премиум</h2>
@@ -121,12 +121,12 @@
             </div>
             
             <div class="bet-controls">
-                <button class="btn" onclick="changeBet(-100)">-100</button>
+                <button class="btn" id="decreaseSlotsBet">-100</button>
                 <span class="bet-amount">Ставка: <span id="slotsBet">200</span></span>
-                <button class="btn" onclick="changeBet(100)">+100</button>
+                <button class="btn" id="increaseSlotsBet">+100</button>
             </div>
             
-            <button class="btn" id="spinSlotsBtn" onclick="spinSlots()">
+            <button class="btn" id="spinSlotsBtn">
                 <i class="fas fa-redo-alt"></i> Крутить
             </button>
             <div class="result" id="slotsResult"></div>
@@ -134,7 +134,7 @@
         
         <!-- Карточная игра -->
         <div class="game-area" id="cardsGame">
-            <button class="btn back-btn" onclick="showMainMenu()">
+            <button class="btn back-btn" id="backFromCards">
                 <i class="fas fa-arrow-left"></i> Назад к играм
             </button>
             <h2>Карты Судьбы</h2>
@@ -151,14 +151,14 @@
             </div>
             
             <div class="bet-controls">
-                <button class="btn" onclick="changeCardBet(-100)">-100</button>
+                <button class="btn" id="decreaseCardsBet">-100</button>
                 <span class="bet-amount">Ставка: <span id="cardsBet">200</span></span>
-                <button class="btn" onclick="changeCardBet(100)">+100</button>
+                <button class="btn" id="increaseCardsBet">+100</button>
             </div>
             
             <div style="margin: 25px 0;">
-                <button class="btn" onclick="guessCard('red')">Красный (x1.5)</button>
-                <button class="btn" onclick="guessCard('black')">Черный (x1.5)</button>
+                <button class="btn" id="guessRed">Красный (x1.5)</button>
+                <button class="btn" id="guessBlack">Черный (x1.5)</button>
             </div>
             
             <div class="result" id="cardsResult"></div>
@@ -166,7 +166,7 @@
         
         <!-- Игра с коэффициентами -->
         <div class="game-area" id="multiplierGame">
-            <button class="btn back-btn" onclick="showMainMenu()">
+            <button class="btn back-btn" id="backFromMultiplier">
                 <i class="fas fa-arrow-left"></i> Назад к играм
             </button>
             <h2>Множитель</h2>
@@ -177,12 +177,12 @@
             <div class="multiplier-display" id="multiplierDisplay">?</div>
             
             <div class="bet-controls">
-                <button class="btn" onclick="changeMultiplierBet(-100)">-100</button>
+                <button class="btn" id="decreaseMultiplierBet">-100</button>
                 <span class="bet-amount">Ставка: <span id="multiplierBet">200</span></span>
-                <button class="btn" onclick="changeMultiplierBet(100)">+100</button>
+                <button class="btn" id="increaseMultiplierBet">+100</button>
             </div>
             
-            <button class="btn" onclick="playMultiplier()">
+            <button class="btn" id="playMultiplierBtn">
                 <i class="fas fa-bolt"></i> Играть
             </button>
             <div class="result" id="multiplierResult"></div>
@@ -192,13 +192,13 @@
     <!-- Модальное окно пополнения -->
     <div class="modal" id="depositModal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeDepositModal()">&times;</span>
+            <span class="close-modal" id="closeModal">&times;</span>
             <h2>Пополнение счета</h2>
             <p>Для пополнения баланса отправьте любую сумму на номер:</p>
             <div class="phone-number">+7 917 950 84 45</div>
             <p>Укажите в комментарии к платежу ваш ID: <strong id="userId">2WIN-7854</strong></p>
             <p>После оплаты баланс будет пополнен в течение 5 минут.</p>
-            <button class="btn btn-deposit" onclick="closeDepositModal()">
+            <button class="btn btn-deposit" id="closeModalBtn">
                 <i class="fas fa-check"></i> Понятно
             </button>
         </div>
