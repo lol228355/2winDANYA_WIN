@@ -447,7 +447,7 @@
             border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
-        /* Модальное окно */
+        /* Модальное окно пополнения */
         .modal {
             display: none;
             position: fixed;
@@ -468,17 +468,58 @@
             padding: 40px;
             border-radius: 20px;
             width: 90%;
-            max-width: 500px;
+            max-width: 400px;
             text-align: center;
         }
         
-        .phone-number {
-            font-size: 1.8rem;
+        .modal h2 {
+            margin-bottom: 25px;
+            color: var(--gold);
+            font-size: 2rem;
+        }
+        
+        .modal-input {
             background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
+            border: 2px solid var(--accent);
             border-radius: 10px;
-            margin: 25px 0;
+            color: white;
+            font-size: 1.5rem;
+            padding: 15px 20px;
+            width: 100%;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .modal-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        
+        .modal-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
             font-weight: bold;
+        }
+        
+        .modal-confirm {
+            background: linear-gradient(to right, var(--success), #1cad5c);
+            color: white;
+        }
+        
+        .modal-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
         }
         
         .close-modal {
@@ -487,6 +528,7 @@
             right: 20px;
             font-size: 2rem;
             cursor: pointer;
+            color: var(--text-secondary);
         }
         
         footer {
@@ -891,18 +933,17 @@
         </div>
     </div>
     
-    <!-- Модальное окно -->
+    <!-- Модальное окно пополнения -->
     <div class="modal" id="depositModal">
         <div class="modal-content">
             <span class="close-modal" id="closeModal">&times;</span>
             <h2>Пополнение счета</h2>
-            <p>Для пополнения баланса отправьте любую сумму на номер:</p>
-            <div class="phone-number">+7 917 950 84 45</div>
-            <p>Укажите в комментарии к платежу ваш ID: <strong id="userId">2WIN-7854</strong></p>
-            <p>После оплаты баланс будет пополнен в течение 5 минут.</p>
-            <button class="btn btn-deposit" id="closeModalBtn">
-                <i class="fas fa-check"></i> Понятно
-            </button>
+            <p>Введите количество монет для пополнения:</p>
+            <input type="number" class="modal-input" id="depositAmount" value="1000" min="100" max="100000">
+            <div class="modal-buttons">
+                <button class="modal-btn modal-cancel" id="cancelDeposit">Отмена</button>
+                <button class="modal-btn modal-confirm" id="confirmDeposit">Пополнить</button>
+            </div>
         </div>
     </div>
     
@@ -957,7 +998,8 @@
             // Пополнение
             document.getElementById('depositBtn').addEventListener('click', openDepositModal);
             document.getElementById('closeModal').addEventListener('click', closeDepositModal);
-            document.getElementById('closeModalBtn').addEventListener('click', closeDepositModal);
+            document.getElementById('cancelDeposit').addEventListener('click', closeDepositModal);
+            document.getElementById('confirmDeposit').addEventListener('click', confirmDeposit);
 
             // Кнопки ставок
             document.querySelectorAll('.bet-btn').forEach(btn => {
@@ -1006,6 +1048,42 @@
             });
         }
 
+        // Функции пополнения
+        function openDepositModal() {
+            document.getElementById('depositModal').style.display = 'block';
+            document.getElementById('depositAmount').value = '1000';
+            document.getElementById('depositAmount').focus();
+        }
+
+        function closeDepositModal() {
+            document.getElementById('depositModal').style.display = 'none';
+        }
+
+        function confirmDeposit() {
+            const depositAmount = parseInt(document.getElementById('depositAmount').value);
+            
+            if (isNaN(depositAmount) || depositAmount < 100) {
+                alert('Введите корректную сумму (минимум 100 монет)');
+                return;
+            }
+            
+            if (depositAmount > 100000) {
+                alert('Максимальная сумма пополнения - 100,000 монет');
+                return;
+            }
+            
+            userBalance += depositAmount;
+            updateAllBalances();
+            closeDepositModal();
+            
+            // Показать уведомление о успешном пополнении
+            showResult('wheelResult', `Баланс пополнен на ${depositAmount} монет!`, true);
+            setTimeout(() => {
+                document.getElementById('wheelResult').textContent = '';
+                document.getElementById('wheelResult').className = 'result';
+            }, 3000);
+        }
+
         function setMaxBet(game) {
             const betInput = document.getElementById(game + 'Bet');
             if (betInput) {
@@ -1048,15 +1126,6 @@
             document.getElementById('multiplierGame').style.display = 'none';
             document.getElementById('diceGame').style.display = 'none';
             document.getElementById('rouletteGame').style.display = 'none';
-        }
-
-        function openDepositModal() {
-            document.getElementById('depositModal').style.display = 'block';
-            document.getElementById('userId').textContent = '2WIN-' + Math.floor(1000 + Math.random() * 9000);
-        }
-
-        function closeDepositModal() {
-            document.getElementById('depositModal').style.display = 'none';
         }
 
         function updateAllBalances() {
