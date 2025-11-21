@@ -1,3 +1,29 @@
+// Глобальные переменные
+let userBalance = 1000;
+let slotsBet = 200;
+let cardsBet = 200;
+let multiplierBet = 200;
+
+const symbols = ['🍒', '🍋', '🍊', '🍇', '🔔', '⭐', '7', '💎'];
+const symbolWeights = [15, 18, 20, 12, 8, 5, 3, 1];
+
+const cardValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+const cardSuits = [
+    { symbol: '♥', color: 'red' },
+    { symbol: '♦', color: 'red' },
+    { symbol: '♣', color: 'black' },
+    { symbol: '♠', color: 'black' }
+];
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    initBackground();
+    initEventListeners();
+    updateAllBalances();
+    initCardsGame();
+    showMainMenu();
+});
+
 // Инициализация анимированного фона
 function initBackground() {
     const bgAnimation = document.getElementById('bgAnimation');
@@ -13,6 +39,45 @@ function initBackground() {
         particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
         bgAnimation.appendChild(particle);
     }
+}
+
+// Инициализация всех обработчиков событий
+function initEventListeners() {
+    // Кнопки главного меню
+    document.querySelector('.play-wheel-btn').addEventListener('click', () => showGame('wheel'));
+    document.querySelector('.play-slots-btn').addEventListener('click', () => showGame('slots'));
+    document.querySelector('.play-cards-btn').addEventListener('click', () => showGame('cards'));
+    document.querySelector('.play-multiplier-btn').addEventListener('click', () => showGame('multiplier'));
+    
+    // Кнопки назад
+    document.getElementById('backFromWheel').addEventListener('click', showMainMenu);
+    document.getElementById('backFromSlots').addEventListener('click', showMainMenu);
+    document.getElementById('backFromCards').addEventListener('click', showMainMenu);
+    document.getElementById('backFromMultiplier').addEventListener('click', showMainMenu);
+    
+    // Пополнение баланса
+    document.getElementById('depositBtn').addEventListener('click', openDepositModal);
+    document.getElementById('closeModal').addEventListener('click', closeDepositModal);
+    document.getElementById('closeModalBtn').addEventListener('click', closeDepositModal);
+    
+    // Колесо фортуны
+    document.getElementById('spinBtn').addEventListener('click', spinWheel);
+    
+    // Слот-машина
+    document.getElementById('decreaseSlotsBet').addEventListener('click', () => changeBet(-100));
+    document.getElementById('increaseSlotsBet').addEventListener('click', () => changeBet(100));
+    document.getElementById('spinSlotsBtn').addEventListener('click', spinSlots);
+    
+    // Карточная игра
+    document.getElementById('decreaseCardsBet').addEventListener('click', () => changeCardBet(-100));
+    document.getElementById('increaseCardsBet').addEventListener('click', () => changeCardBet(100));
+    document.getElementById('guessRed').addEventListener('click', () => guessCard('red'));
+    document.getElementById('guessBlack').addEventListener('click', () => guessCard('black'));
+    
+    // Множитель
+    document.getElementById('decreaseMultiplierBet').addEventListener('click', () => changeMultiplierBet(-100));
+    document.getElementById('increaseMultiplierBet').addEventListener('click', () => changeMultiplierBet(100));
+    document.getElementById('playMultiplierBtn').addEventListener('click', playMultiplier);
 }
 
 // Общие функции для переключения между играми
@@ -42,7 +107,6 @@ function showMainMenu() {
 // Модальное окно пополнения
 function openDepositModal() {
     document.getElementById('depositModal').style.display = 'block';
-    // Генерация случайного ID пользователя
     document.getElementById('userId').textContent = '2WIN-' + Math.floor(1000 + Math.random() * 9000);
 }
 
@@ -50,9 +114,7 @@ function closeDepositModal() {
     document.getElementById('depositModal').style.display = 'none';
 }
 
-// Общий баланс пользователя
-let userBalance = 1000;
-
+// Обновление балансов
 function updateAllBalances() {
     document.getElementById('userBalance').textContent = userBalance;
     document.getElementById('slotsBalance').textContent = userBalance;
@@ -60,21 +122,20 @@ function updateAllBalances() {
     document.getElementById('multiplierBalance').textContent = userBalance;
 }
 
-// Колесо фортуны с уменьшенными шансами
+// Колесо фортуны
 function initWheel() {
     const wheel = document.getElementById('wheel');
     wheel.innerHTML = '';
     
-    // Сегменты с очень низкими шансами на выигрыш
     const segments = [
-        { text: "0", color: "#ff4d4d", value: 0, chance: 0.6 },
-        { text: "0", color: "#ff944d", value: 0, chance: 0.5 },
-        { text: "10", color: "#ffdd4d", value: 10, chance: 0.1 },
-        { text: "0", color: "#4dff4d", value: 0, chance: 0.5 },
-        { text: "0", color: "#4dd2ff", value: 0, chance: 0.6 },
-        { text: "50", color: "#4d4dff", value: 50, chance: 0.05 },
-        { text: "0", color: "#dd4dff", value: 0, chance: 0.5 },
-        { text: "100", color: "#ff4da6", value: 100, chance: 0.05 }
+        { text: "0", color: "#ff4d4d", value: 0 },
+        { text: "0", color: "#ff944d", value: 0 },
+        { text: "10", color: "#ffdd4d", value: 10 },
+        { text: "0", color: "#4dff4d", value: 0 },
+        { text: "0", color: "#4dd2ff", value: 0 },
+        { text: "50", color: "#4d4dff", value: 50 },
+        { text: "0", color: "#dd4dff", value: 0 },
+        { text: "100", color: "#ff4da6", value: 100 }
     ];
     
     let currentAngle = 0;
@@ -91,8 +152,7 @@ function initWheel() {
 
 function spinWheel() {
     if (userBalance < 200) {
-        document.getElementById('wheelResult').textContent = "Недостаточно монет для игры!";
-        document.getElementById('wheelResult').className = 'result lose';
+        showResult('wheelResult', "Недостаточно монет для игры!", false);
         return;
     }
     
@@ -100,21 +160,16 @@ function spinWheel() {
     updateAllBalances();
     
     const wheel = document.getElementById('wheel');
-    const result = document.getElementById('wheelResult');
     const spinBtn = document.getElementById('spinBtn');
+    const result = document.getElementById('wheelResult');
     
-    // Отключаем кнопку на время вращения
     spinBtn.disabled = true;
     result.textContent = '';
     result.className = 'result';
     
-    // Случайный угол вращения (минимум 3 полных оборота)
     const degrees = 1080 + Math.floor(Math.random() * 360);
-    
-    // Вращаем колесо
     wheel.style.transform = `rotate(${degrees}deg)`;
     
-    // Определяем результат после завершения вращения
     setTimeout(() => {
         const actualDegrees = degrees % 360;
         const segmentIndex = Math.floor(actualDegrees / 45);
@@ -130,30 +185,21 @@ function spinWheel() {
             { text: "100 монет", value: 100, win: true }
         ];
         
-        const win = segments[segmentIndex].win;
-        const value = segments[segmentIndex].value;
+        const segment = segments[segmentIndex];
         
-        if (win) {
-            userBalance += value;
-            updateAllBalances();
-            result.textContent = `Поздравляем! Вы выиграли: ${segments[segmentIndex].text}!`;
-            result.className = 'result win';
+        if (segment.win) {
+            userBalance += segment.value;
+            showResult('wheelResult', `Поздравляем! Вы выиграли: ${segment.text}!`, true);
         } else {
-            result.textContent = `К сожалению, вы ничего не выиграли. Попробуйте еще раз!`;
-            result.className = 'result lose';
+            showResult('wheelResult', `К сожалению, вы ничего не выиграли. Попробуйте еще раз!`, false);
         }
         
+        updateAllBalances();
         spinBtn.disabled = false;
     }, 4000);
 }
 
-// Слот-машина с уменьшенными шансами
-let slotsBet = 200;
-
-const symbols = ['🍒', '🍋', '🍊', '🍇', '🔔', '⭐', '7', '💎'];
-// Веса символов (меньше вес = реже выпадает)
-const symbolWeights = [15, 18, 20, 12, 8, 5, 3, 1];
-
+// Слот-машина
 function changeBet(amount) {
     slotsBet += amount;
     if (slotsBet < 100) slotsBet = 100;
@@ -176,8 +222,7 @@ function getWeightedSymbol() {
 
 function spinSlots() {
     if (userBalance < slotsBet) {
-        document.getElementById('slotsResult').textContent = "Недостаточно монет!";
-        document.getElementById('slotsResult').className = 'result lose';
+        showResult('slotsResult', "Недостаточно монет!", false);
         return;
     }
     
@@ -190,23 +235,19 @@ function spinSlots() {
         document.getElementById('reel3')
     ];
     
-    const results = [];
     const spinBtn = document.getElementById('spinSlotsBtn');
     spinBtn.disabled = true;
-    document.getElementById('slotsResult').textContent = '';
-    document.getElementById('slotsResult').className = 'result';
     
-    // Анимация вращения
     let spins = 0;
+    const results = [];
+    
     const spinInterval = setInterval(() => {
         for (let i = 0; i < 3; i++) {
             const randomSymbol = getWeightedSymbol();
             reels[i].textContent = randomSymbol;
             
-            if (spins > 15 + i * 5) {
-                if (!results[i]) {
-                    results[i] = randomSymbol;
-                }
+            if (spins > 15 + i * 5 && !results[i]) {
+                results[i] = randomSymbol;
             }
         }
         
@@ -215,31 +256,21 @@ function spinSlots() {
         if (spins > 30) {
             clearInterval(spinInterval);
             
-            // Проверяем выигрыш с очень низкими шансами
             let winAmount = 0;
             if (results[0] === results[1] && results[1] === results[2]) {
-                // Джекпот за три одинаковых символа
-                if (results[0] === '💎') {
-                    winAmount = slotsBet * 15;
-                } else if (results[0] === '7') {
-                    winAmount = slotsBet * 10;
-                } else if (results[0] === '⭐') {
-                    winAmount = slotsBet * 8;
-                } else {
-                    winAmount = slotsBet * 3;
-                }
+                if (results[0] === '💎') winAmount = slotsBet * 15;
+                else if (results[0] === '7') winAmount = slotsBet * 10;
+                else if (results[0] === '⭐') winAmount = slotsBet * 8;
+                else winAmount = slotsBet * 3;
             } else if (results[0] === results[1] || results[1] === results[2]) {
-                // Уменьшаем выигрыш за две одинаковых
                 winAmount = slotsBet * 1.5;
             }
             
             if (winAmount > 0) {
                 userBalance += winAmount;
-                document.getElementById('slotsResult').textContent = `Поздравляем! Вы выиграли ${winAmount} монет!`;
-                document.getElementById('slotsResult').className = 'result win';
+                showResult('slotsResult', `Поздравляем! Вы выиграли ${winAmount} монет!`, true);
             } else {
-                document.getElementById('slotsResult').textContent = "Повезет в следующий раз!";
-                document.getElementById('slotsResult').className = 'result lose';
+                showResult('slotsResult', "Повезет в следующий раз!", false);
             }
             
             updateAllBalances();
@@ -248,16 +279,11 @@ function spinSlots() {
     }, 100);
 }
 
-// Карточная игра с уменьшенными шансами
-let cardsBet = 200;
-
-const cardValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-const cardSuits = [
-    { symbol: '♥', color: 'red' },
-    { symbol: '♦', color: 'red' },
-    { symbol: '♣', color: 'black' },
-    { symbol: '♠', color: 'black' }
-];
+// Карточная игра
+function initCardsGame() {
+    const initialCard = getRandomCard();
+    updateCardDisplay(initialCard);
+}
 
 function changeCardBet(amount) {
     cardsBet += amount;
@@ -272,8 +298,7 @@ function getRandomCard() {
     return {
         value: value,
         suit: suit.symbol,
-        color: suit.color,
-        display: value + suit.symbol
+        color: suit.color
     };
 }
 
@@ -289,8 +314,7 @@ function updateCardDisplay(card) {
 
 function guessCard(color) {
     if (userBalance < cardsBet) {
-        document.getElementById('cardsResult').textContent = "Недостаточно монет!";
-        document.getElementById('cardsResult').className = 'result lose';
+        showResult('cardsResult', "Недостаточно монет!", false);
         return;
     }
     
@@ -300,29 +324,20 @@ function guessCard(color) {
     const newCard = getRandomCard();
     updateCardDisplay(newCard);
     
-    // Уменьшаем шансы выигрыша до 40%
-    let win = false;
-    if (newCard.color === color) {
-        // 40% шанс на правильное угадывание
-        win = Math.random() < 0.4;
-    }
+    const win = (newCard.color === color) && (Math.random() < 0.4);
     
     if (win) {
         const winAmount = Math.floor(cardsBet * 1.5);
         userBalance += winAmount;
-        document.getElementById('cardsResult').textContent = `Правильно! Вы выиграли ${winAmount} монет!`;
-        document.getElementById('cardsResult').className = 'result win';
+        showResult('cardsResult', `Правильно! Вы выиграли ${winAmount} монет!`, true);
     } else {
-        document.getElementById('cardsResult').textContent = "Не угадали! Попробуйте еще раз.";
-        document.getElementById('cardsResult').className = 'result lose';
+        showResult('cardsResult', "Не угадали! Попробуйте еще раз.", false);
     }
     
     updateAllBalances();
 }
 
-// Игра с коэффициентами с возможностью проигрыша
-let multiplierBet = 200;
-
+// Множитель
 function changeMultiplierBet(amount) {
     multiplierBet += amount;
     if (multiplierBet < 100) multiplierBet = 100;
@@ -332,17 +347,16 @@ function changeMultiplierBet(amount) {
 
 function playMultiplier() {
     if (userBalance < multiplierBet) {
-        document.getElementById('multiplierResult').textContent = "Недостаточно монет!";
-        document.getElementById('multiplierResult').className = 'result lose';
+        showResult('multiplierResult', "Недостаточно монет!", false);
         return;
     }
     
     userBalance -= multiplierBet;
     updateAllBalances();
     
-    // Анимация изменения множителя
-    let counter = 0;
     const multiplierDisplay = document.getElementById('multiplierDisplay');
+    let counter = 0;
+    
     const interval = setInterval(() => {
         multiplierDisplay.textContent = (Math.random() * 20).toFixed(1) + 'x';
         counter++;
@@ -350,34 +364,24 @@ function playMultiplier() {
         if (counter > 20) {
             clearInterval(interval);
             
-            // Реалистичные шансы с очень низкой вероятностью выигрыша
             const random = Math.random();
             let multiplier;
             
-            if (random < 0.6) {
-                multiplier = 0; // 60% шанс проигрыша
-            } else if (random < 0.8) {
-                multiplier = 1; // 20% шанс возврата
-            } else if (random < 0.9) {
-                multiplier = 2; // 10% шанс
-            } else if (random < 0.95) {
-                multiplier = 5; // 5% шанс
-            } else if (random < 0.98) {
-                multiplier = 10; // 3% шанс
-            } else {
-                multiplier = 20; // 2% шанс
-            }
+            if (random < 0.6) multiplier = 0;
+            else if (random < 0.8) multiplier = 1;
+            else if (random < 0.9) multiplier = 2;
+            else if (random < 0.95) multiplier = 5;
+            else if (random < 0.98) multiplier = 10;
+            else multiplier = 20;
             
             multiplierDisplay.textContent = multiplier.toFixed(1) + 'x';
             
             if (multiplier > 0) {
                 const winAmount = Math.floor(multiplierBet * multiplier);
                 userBalance += winAmount;
-                document.getElementById('multiplierResult').textContent = `Поздравляем! Вы выиграли ${winAmount} монет!`;
-                document.getElementById('multiplierResult').className = 'result win';
+                showResult('multiplierResult', `Поздравляем! Вы выиграли ${winAmount} монет!`, true);
             } else {
-                document.getElementById('multiplierResult').textContent = "К сожалению, вы не выиграли. Попробуйте еще раз!";
-                document.getElementById('multiplierResult').className = 'result lose';
+                showResult('multiplierResult', "К сожалению, вы не выиграли. Попробуйте еще раз!", false);
             }
             
             updateAllBalances();
@@ -385,13 +389,9 @@ function playMultiplier() {
     }, 100);
 }
 
-// Инициализация при загрузке страницы
-window.onload = function() {
-    initBackground();
-    showMainMenu();
-    updateAllBalances();
-    
-    // Инициализация начальной карты
-    const initialCard = getRandomCard();
-    updateCardDisplay(initialCard);
-};
+// Вспомогательная функция для отображения результатов
+function showResult(elementId, message, isWin) {
+    const element = document.getElementById(elementId);
+    element.textContent = message;
+    element.className = isWin ? 'result win' : 'result lose';
+}
