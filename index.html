@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2WIN - VIP Казино</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Анимированный фон -->
+    <div class="bg-animation" id="bgAnimation"></div>
+    
+    <header>
+        <div class="logo">
+            <div class="logo-icon">2W</div>
+            <h1>2WIN</h1>
+        </div>
+        <div class="subtitle">VIP КАЗИНО • ЭКСКЛЮЗИВНЫЕ ИГРЫ</div>
+        
+        <div class="user-panel">
+            <div class="balance">
+                <i class="fas fa-coins"></i>
+                <span id="userBalance">1000</span> монет
+            </div>
+            <button class="btn btn-deposit" onclick="openDepositModal()">
+                <i class="fas fa-plus-circle"></i> Пополнить
+            </button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="games-grid" id="gamesGrid">
+            <div class="game-card">
+                <div class="game-icon">
+                    <i class="fas fa-dharmachakra"></i>
+                </div>
+                <h2>Колесо Удачи</h2>
+                <p>Испытай судьбу на нашем эксклюзивном колесе с крупными призами и бонусами!</p>
+                <button class="btn" onclick="showGame('wheel')">
+                    <i class="fas fa-play-circle"></i> Играть
+                </button>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">
+                    <i class="fas fa-sliders-h"></i>
+                </div>
+                <h2>Слоты Премиум</h2>
+                <p>Роскошные слоты с уникальными символами и увеличенными джекпотами!</p>
+                <button class="btn" onclick="showGame('slots')">
+                    <i class="fas fa-play-circle"></i> Играть
+                </button>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h2>Карты Судьбы</h2>
+                <p>Угадай цвет следующей карты и получи максимальный коэффициент выигрыша!</p>
+                <button class="btn" onclick="showGame('cards')">
+                    <i class="fas fa-play-circle"></i> Играть
+                </button>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h2>Множитель</h2>
+                <p>Сделай ставку и получи случайный множитель с эксклюзивными коэффициентами!</p>
+                <button class="btn" onclick="showGame('multiplier')">
+                    <i class="fas fa-play-circle"></i> Играть
+                </button>
+            </div>
+        </div>
+        
+        <!-- Колесо фортуны -->
+        <div class="game-area" id="wheelGame">
+            <button class="btn back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Назад к играм
+            </button>
+            <h2>Колесо Удачи</h2>
+            <p>Крути колесо и выигрывай эксклюзивные призы!</p>
+            
+            <div class="wheel-container">
+                <div class="wheel-pointer"></div>
+                <div class="wheel" id="wheel">
+                    <!-- Сегменты колеса будут добавлены через JS -->
+                </div>
+                <div class="wheel-center">VIP</div>
+            </div>
+            
+            <button class="btn" id="spinBtn" onclick="spinWheel()">
+                <i class="fas fa-redo-alt"></i> Крутить за 200 монет
+            </button>
+            <div class="result" id="wheelResult"></div>
+        </div>
+        
+        <!-- Слот-машина -->
+        <div class="game-area" id="slotsGame">
+            <button class="btn back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Назад к играм
+            </button>
+            <h2>Слоты Премиум</h2>
+            <p>Собери выигрышные комбинации и получи джекпот!</p>
+            
+            <div class="balance">Баланс: <span id="slotsBalance">1000</span> монет</div>
+            
+            <div class="slots-container">
+                <div class="slot">
+                    <div class="slot-reel" id="reel1">💎</div>
+                </div>
+                <div class="slot">
+                    <div class="slot-reel" id="reel2">💎</div>
+                </div>
+                <div class="slot">
+                    <div class="slot-reel" id="reel3">💎</div>
+                </div>
+            </div>
+            
+            <div class="bet-controls">
+                <button class="btn" onclick="changeBet(-100)">-100</button>
+                <span class="bet-amount">Ставка: <span id="slotsBet">200</span></span>
+                <button class="btn" onclick="changeBet(100)">+100</button>
+            </div>
+            
+            <button class="btn" id="spinSlotsBtn" onclick="spinSlots()">
+                <i class="fas fa-redo-alt"></i> Крутить
+            </button>
+            <div class="result" id="slotsResult"></div>
+        </div>
+        
+        <!-- Карточная игра -->
+        <div class="game-area" id="cardsGame">
+            <button class="btn back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Назад к играм
+            </button>
+            <h2>Карты Судьбы</h2>
+            <p>Угадай цвет следующей карты: красный или черный.</p>
+            
+            <div class="balance">Баланс: <span id="cardsBalance">1000</span> монет</div>
+            
+            <div class="cards-container">
+                <div class="card red" id="currentCard">
+                    <div class="card-corner card-top">A<span>♥</span></div>
+                    <div class="card-suit">♥</div>
+                    <div class="card-corner card-bottom">A<span>♥</span></div>
+                </div>
+            </div>
+            
+            <div class="bet-controls">
+                <button class="btn" onclick="changeCardBet(-100)">-100</button>
+                <span class="bet-amount">Ставка: <span id="cardsBet">200</span></span>
+                <button class="btn" onclick="changeCardBet(100)">+100</button>
+            </div>
+            
+            <div style="margin: 25px 0;">
+                <button class="btn" onclick="guessCard('red')">Красный (x1.5)</button>
+                <button class="btn" onclick="guessCard('black')">Черный (x1.5)</button>
+            </div>
+            
+            <div class="result" id="cardsResult"></div>
+        </div>
+        
+        <!-- Игра с коэффициентами -->
+        <div class="game-area" id="multiplierGame">
+            <button class="btn back-btn" onclick="showMainMenu()">
+                <i class="fas fa-arrow-left"></i> Назад к играм
+            </button>
+            <h2>Множитель</h2>
+            <p>Сделай ставку и получи случайный множитель от 0x до 20x!</p>
+            
+            <div class="balance">Баланс: <span id="multiplierBalance">1000</span> монет</div>
+            
+            <div class="multiplier-display" id="multiplierDisplay">?</div>
+            
+            <div class="bet-controls">
+                <button class="btn" onclick="changeMultiplierBet(-100)">-100</button>
+                <span class="bet-amount">Ставка: <span id="multiplierBet">200</span></span>
+                <button class="btn" onclick="changeMultiplierBet(100)">+100</button>
+            </div>
+            
+            <button class="btn" onclick="playMultiplier()">
+                <i class="fas fa-bolt"></i> Играть
+            </button>
+            <div class="result" id="multiplierResult"></div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно пополнения -->
+    <div class="modal" id="depositModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeDepositModal()">&times;</span>
+            <h2>Пополнение счета</h2>
+            <p>Для пополнения баланса отправьте любую сумму на номер:</p>
+            <div class="phone-number">+7 917 950 84 45</div>
+            <p>Укажите в комментарии к платежу ваш ID: <strong id="userId">2WIN-7854</strong></p>
+            <p>После оплаты баланс будет пополнен в течение 5 минут.</p>
+            <button class="btn btn-deposit" onclick="closeDepositModal()">
+                <i class="fas fa-check"></i> Понятно
+            </button>
+        </div>
+    </div>
+    
+    <footer>
+        <p>2WIN - VIP КАЗИНО. Играйте ответственно. 18+</p>
+        <p>© 2023 2WIN. Все права защищены.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
